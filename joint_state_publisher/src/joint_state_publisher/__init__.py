@@ -84,6 +84,9 @@ class JointStatePublisher():
                 if jtype in ['fixed', 'floating', 'planar']:
                     continue
                 name = child.getAttribute('name')
+                if len(self.selected_joints) > 0:
+                    if name not in self.selected_joints:
+                        continue
                 self.joint_list.append(name)
                 if jtype == 'continuous':
                     minval = -math.pi
@@ -146,6 +149,7 @@ class JointStatePublisher():
 
         self.free_joints = {}
         self.joint_list = [] # for maintaining the original order of the joints
+        self.selected_joints = get_param("selected_joints", [])
         self.dependent_joints = get_param("dependent_joints", {})
         self.use_mimic = get_param('use_mimic_tags', True)
         self.use_small = get_param('use_smallest_joint_limits', True)
